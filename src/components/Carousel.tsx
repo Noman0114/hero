@@ -15,19 +15,27 @@ interface CarouselProps {
   items: CarouselItem[];
 }
 
+// Define types for arrow props
 interface ArrowProps {
+  className?: string;
+  style?: React.CSSProperties;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
+}
+
+// Define interface for slider element with slickGoTo method
+interface SlickSliderElement extends HTMLElement {
+  slickGoTo: (slideIndex: number) => void;
 }
 
 const Carousel: React.FC<CarouselProps> = ({ items }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   
-  const PrevArrow: React.FC<ArrowProps> = (props) => {
+  const PrevArrow = (props: ArrowProps) => {
     const { onClick } = props;
     return (
       <button 
         onClick={onClick} 
-        className="absolute top-[535px] left-[150px] transform text-white p-2 opacity-70 hover:opacity-100"
+        className="absolute top-[535px] left-[150px] transform  text-white p-2 opacity-70 hover:opacity-100"
         aria-label="Previous slide"
       >
         <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
@@ -37,12 +45,12 @@ const Carousel: React.FC<CarouselProps> = ({ items }) => {
     );
   };
 
-  const NextArrow: React.FC<ArrowProps> = (props) => {
+  const NextArrow = (props: ArrowProps) => {
     const { onClick } = props;
     return (
       <button 
         onClick={onClick} 
-        className="absolute top-[535px] left-[310px] transform text-white p-2 opacity-70 hover:opacity-100"
+        className="absolute  top-[535px] left-[310px] transform  text-white p-2 opacity-70 hover:opacity-100"
         aria-label="Next slide"
       >
         <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
@@ -75,7 +83,7 @@ const Carousel: React.FC<CarouselProps> = ({ items }) => {
 
   return (
     <>
-    <div className="flex flex-col md:ml-62 ml-0">
+    <div className="  flex flex-col md:ml-62 ml-0 ">
       <Slider {...settings}>
         {items.map((item) => (
           <div key={item.id} className="px-2">
@@ -100,26 +108,25 @@ const Carousel: React.FC<CarouselProps> = ({ items }) => {
             key={index} 
             className={`carousel-indicator ${currentSlide === index ? 'active' : ''}`}
             onClick={() => {
-              // Using type assertion for the slider with slick methods
-              const slider = document.querySelector('.slick-slider');
-              // Using proper type handling for the Slick slider
-              if (slider && 'slickGoTo' in (slider as any)) {
-                (slider as any).slickGoTo(index);
+              const slider = document.querySelector('.slick-slider') as HTMLElement;
+              if (slider && 'slickGoTo' in slider) {
+                (slider as SlickSliderElement).slickGoTo(index);
               }
             }}
           />
         ))}
       </div>
     </div>
-    <div className='max-w-lg h-28 mt-18 flex flex-row gap-1 mx-auto justify-center items-center ml-[300px]'>
-      <video src="/images/2.mp4" autoPlay muted loop className='h-full object-cover'></video>
-      <div className='flex flex-col w-[200px]'>
+    <div className=' max-w-lg h-28 mt-18 flex flex-row gap-1 mx-auto justify-center items-center ml-[300px]'>
+      <video src="/images/2.mp4" autoPlay muted loop className='   h-full object-cover'></video>
+      <div className='flex flex-col  w-[200px]'>
         <div className='font-semibold text-white'>SEE OUR WORK</div>
         <div className='font-semibold text-2xl text-white'>IN ACTION</div>
-        <div className='text-white'>1 MINUTE</div>
+        <div className=' text-white'>1 MINUTE</div>
       </div>
     </div>
     </>
+
   );
 };
 
